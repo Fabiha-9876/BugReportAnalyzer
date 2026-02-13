@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block title %}Cycle: {{ cycle.name }} - Bug Report Accuracy Analyzer{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item active">{{ cycle.name }}</li>
+            </ol>
+        </nav>
+        <h2>{{ cycle.name }}</h2>
+        <p class="text-muted">Source: {{ cycle.source_system }} | File: {{ cycle.upload_file_name }}</p>
+    </div>
+    <div class="col-auto">
+        <a href="/review/{{ cycle.id }}" class="btn btn-warning btn-sm me-2">
+            <i class="bi bi-eye"></i> Review Queue
+        </a>
+        <a href="/api/export/cycle/{{ cycle.id }}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-download"></i> Export CSV
+        </a>
+    </div>
+</div>
+
+<!-- Metrics Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="card-subtitle text-muted">Total Bugs</h6>
+                <h3 class="mt-2">{{ metrics.total_bugs }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="card-subtitle text-muted">Testing Accuracy</h6>
+                <h3 class="mt-2 {% if metrics.testing_accuracy >= 0.8 %}text-success{% elif metrics.testing_accuracy >= 0.6 %}text-warning{% else %}text-danger{% endif %}">
+                    {{ "%.1f"|format(metrics.testing_accuracy * 100) }}%
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="card-subtitle text-muted">Duplicate Rate</h6>
+                <h3 class="mt-2">{{ "%.1f"|format(metrics.duplicate_rate * 100) }}%</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="card-subtitle text-muted">Invalid Rate</h6>
+                <h3 class="mt-2">{{ "%.1f"|format(metrics.invalid_rate * 100) }}%</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="card-subtitle text-muted">DDE</h6>
+                <h3 class="mt-2">{{ "%.1f"|format(metrics.dde * 100) }}%</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="card-subtitle text-muted">Misclass. Rate</h6>
+                <h3 class="mt-2">{{ "%.1f"|format(metrics.misclassification_rate * 100) }}%</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-header">Classification Distribution</div>
+            <div class="card-body">
+                <canvas id="classificationDonut"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header">Per-Tester Accuracy</div>
+            <div class="card-body">
+                <canvas id="testerChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bug Table -->
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Bug Reports</span>
+        <input type="text" class="form-control form-control-sm w-25" id="bugSearch" placeholder="Search bugs...">
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover mb-0" id="bugTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Summary</th>
+                    <th>Component</th>
+                    <th>Reporter</th>
+                    <th>Priority</th>
+                    <th>Classification</th>
+                    <th>Confidence</th>
+                    <th>Reviewed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bug in bugs %}
+                <tr class="clickable-row" onclick="window.location='/bugs/{{ bug.id }}'">
+                    <td>{{ bug.external_id or bug.id }}</td>
+                    <td>{{ bug.summary[:60] }}{% if bug.summary|length > 60 %}...{% endif %}</td>
+                    <td>{{ bug.component }}</td>
+                    <td>{{ bug.reporter }}</td>
+                    <td><span class="badge bg-{{ 'danger' if bug.priority in ['Critical', 'Blocker'] else 'warning' if bug.priority == 'Major' else 'info' }}">{{ bug.priority }}</span></td>
+                    <td>
+                        {% set cls = bug.final_classification or bug.ml_classification or 'pending' %}
+                        <span class="badge bg-{{ 'success' if cls == 'valid' else 'danger' if cls == 'invalid' else 'secondary' if cls == 'duplicate' else 'info' }}">
+                            {{ cls }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if bug.ml_confidence %}
+                        <div class="progress" style="height: 20px; min-width: 60px;">
+                            <div class="progress-bar {% if bug.ml_confidence >= 0.8 %}bg-success{% elif bug.ml_confidence >= 0.6 %}bg-warning{% else %}bg-danger{% endif %}"
+                                 style="width: {{ (bug.ml_confidence * 100)|int }}%">
+                                {{ "%.0f"|format(bug.ml_confidence * 100) }}%
+                            </div>
+                        </div>
+                        {% else %}-{% endif %}
+                    </td>
+                    <td>{{ '<i class="bi bi-check-circle text-success"></i>'|safe if bug.reviewed else '<i class="bi bi-clock text-muted"></i>'|safe }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const distData = {{ metrics.classification_distribution | tojson }};
+    const testerData = {{ metrics.per_tester | tojson }};
+    renderClassificationDonut('classificationDonut', distData);
+    renderTesterChart('testerChart', testerData);
+
+    document.getElementById('bugSearch').addEventListener('input', function() {
+        const val = this.value.toLowerCase();
+        document.querySelectorAll('#bugTable tbody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(val) ? '' : 'none';
+        });
+    });
+</script>
+{% endblock %}

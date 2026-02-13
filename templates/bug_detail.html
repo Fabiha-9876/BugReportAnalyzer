@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}Bug: {{ bug.summary[:40] }} - Bug Report Accuracy Analyzer{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="/cycles/{{ bug.cycle_id }}">Cycle</a></li>
+        <li class="breadcrumb-item active">{{ bug.external_id or bug.id }}</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <!-- Bug Info -->
+    <div class="col-lg-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header d-flex justify-content-between">
+                <span><strong>{{ bug.external_id or 'BUG-' ~ bug.id }}</strong></span>
+                {% set cls = bug.final_classification or bug.ml_classification or 'pending' %}
+                <span class="badge bg-{{ 'success' if cls == 'valid' else 'danger' if cls == 'invalid' else 'secondary' if cls == 'duplicate' else 'info' }} fs-6">
+                    {{ cls }}
+                </span>
+            </div>
+            <div class="card-body">
+                <h5>{{ bug.summary }}</h5>
+                <div class="row mt-3">
+                    <div class="col-md-3"><strong>Status:</strong> {{ bug.status }}</div>
+                    <div class="col-md-3"><strong>Priority:</strong> {{ bug.priority }}</div>
+                    <div class="col-md-3"><strong>Severity:</strong> {{ bug.severity }}</div>
+                    <div class="col-md-3"><strong>Component:</strong> {{ bug.component }}</div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-3"><strong>Reporter:</strong> {{ bug.reporter }}</div>
+                    <div class="col-md-3"><strong>Assignee:</strong> {{ bug.assignee or 'Unassigned' }}</div>
+                    <div class="col-md-3"><strong>Type:</strong> {{ bug.original_type }}</div>
+                    <div class="col-md-3"><strong>Resolution:</strong> {{ bug.resolution or 'None' }}</div>
+                </div>
+                {% if bug.description %}
+                <hr>
+                <h6>Description</h6>
+                <pre class="bg-light p-3 rounded" style="white-space: pre-wrap;">{{ bug.description }}</pre>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- ML Explanation -->
+        {% if bug.ml_explanation %}
+        <div class="card shadow-sm mb-4">
+            <div class="card-header"><i class="bi bi-robot"></i> ML Explanation</div>
+            <div class="card-body">
+                <p>{{ bug.ml_explanation }}</p>
+                {% if bug.ml_confidence %}
+                <div class="progress" style="height: 25px;">
+                    <div class="progress-bar {% if bug.ml_confidence >= 0.8 %}bg-success{% elif bug.ml_confidence >= 0.6 %}bg-warning{% else %}bg-danger{% endif %}"
+                         style="width: {{ (bug.ml_confidence * 100)|int }}%">
+                        Confidence: {{ "%.1f"|format(bug.ml_confidence * 100) }}%
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Similar Bugs -->
+        {% if similar_bugs %}
+        <div class="card shadow-sm mb-4">
+            <div class="card-header"><i class="bi bi-diagram-2"></i> Similar Bugs</div>
+            <div class="list-group list-group-flush">
+                {% for sb in similar_bugs %}
+                <a href="/bugs/{{ sb.id }}" class="list-group-item list-group-item-action">
+                    <strong>{{ sb.external_id or sb.id }}</strong>: {{ sb.summary }}
+                    {% if bug.duplicate_similarity %}
+                    <span class="badge bg-info float-end">{{ "%.0f"|format(bug.duplicate_similarity * 100) }}% similar</span>
+                    {% endif %}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Audit Log -->
+        {% if audit_logs %}
+        <div class="card shadow-sm">
+            <div class="card-header"><i class="bi bi-clock-history"></i> Audit Log</div>
+            <div class="table-responsive">
+                <table class="table table-sm mb-0">
+                    <thead>
+                        <tr><th>Time</th><th>Previous</th><th>New</th><th>Source</th><th>By</th><th>Reason</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for log in audit_logs %}
+                        <tr>
+                            <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M') if log.timestamp else '' }}</td>
+                            <td>{{ log.previous_classification or '-' }}</td>
+                            <td><strong>{{ log.new_classification }}</strong></td>
+                            <td>{{ log.source }}</td>
+                            <td>{{ log.changed_by or '-' }}</td>
+                            <td>{{ log.reason or '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Override Panel -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm sticky-top" style="top: 80px;">
+            <div class="card-header"><i class="bi bi-pencil-square"></i> Override Classification</div>
+            <div class="card-body">
+                <form id="overrideForm">
+                    <input type="hidden" id="bugId" value="{{ bug.id }}">
+                    <div class="mb-3">
+                        <label class="form-label">New Classification</label>
+                        <select class="form-select" id="newClassification">
+                            <option value="valid" {% if cls == 'valid' %}selected{% endif %}>Valid</option>
+                            <option value="invalid" {% if cls == 'invalid' %}selected{% endif %}>Invalid</option>
+                            <option value="duplicate" {% if cls == 'duplicate' %}selected{% endif %}>Duplicate</option>
+                            <option value="enhancement" {% if cls == 'enhancement' %}selected{% endif %}>Enhancement</option>
+                            <option value="wont_fix" {% if cls == 'wont_fix' %}selected{% endif %}>Won't Fix</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Reviewer</label>
+                        <input type="text" class="form-control" id="changedBy" value="reviewer">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Reason</label>
+                        <textarea class="form-control" id="overrideReason" rows="3" placeholder="Why are you overriding the ML classification?"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">
+                        <i class="bi bi-check-lg"></i> Submit Override
+                    </button>
+                </form>
+                <div id="overrideResult" class="mt-2 d-none">
+                    <div class="alert" id="overrideAlert"></div>
+                </div>
+
+                {% if bug.reviewed %}
+                <div class="alert alert-info mt-3 mb-0">
+                    <small>Reviewed by <strong>{{ bug.reviewed_by }}</strong>
+                    {% if bug.override_reason %}<br>Reason: {{ bug.override_reason }}{% endif %}</small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('overrideForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const data = {
+        bug_id: parseInt(document.getElementById('bugId').value),
+        new_classification: document.getElementById('newClassification').value,
+        changed_by: document.getElementById('changedBy').value,
+        reason: document.getElementById('overrideReason').value,
+    };
+    try {
+        const resp = await fetch('/api/override', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data),
+        });
+        const result = await resp.json();
+        const alertDiv = document.getElementById('overrideAlert');
+        const resultDiv = document.getElementById('overrideResult');
+        resultDiv.classList.remove('d-none');
+        if (resp.ok) {
+            alertDiv.className = 'alert alert-success';
+            alertDiv.textContent = 'Classification updated to: ' + result.new_classification;
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            alertDiv.className = 'alert alert-danger';
+            alertDiv.textContent = result.detail || 'Error';
+        }
+    } catch(err) {
+        console.error(err);
+    }
+});
+</script>
+{% endblock %}

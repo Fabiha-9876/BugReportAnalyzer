@@ -1,0 +1,641 @@
+Issue key,Summary,Description,Status,Priority,Severity,Component/s,Reporter,Assignee,Created,Resolved,Resolution,Labels,Issue Type,_true_label
+PROJ-2004,Multi-select filter loses state when navigating back from detail page,"Steps to reproduce:
+1. Navigate to Dashboard
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Resolved,Minor,Critical,Dashboard,bob.smith,eve.davis,2025-03-22T23:00:00,2025-03-27T00:00:00,Won't Fix,,Bug,valid
+PROJ-2070,Dropdown menu clips behind adjacent card component,"Found during regression testing of Search.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Resolved,Minor,Trivial,Search,carol.williams,bob.smith,2025-03-14T12:00:00,,,"regression,ui",Bug,valid
+PROJ-2023,Long file names overflow attachment chip component in message thread,"Steps to reproduce:
+1. Navigate to Settings
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Reopened,Major,Minor,Settings,alice.johnson,frank.miller,2025-03-13T07:00:00,2025-03-26T00:00:00,Fixed,"regression,critical",Bug,valid
+PROJ-2040,Table sort on numeric column treats values as strings,"Found during regression testing of Settings.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Closed,Minor,Critical,Settings,bob.smith,alice.johnson,2025-03-09T22:00:00,2025-04-10T00:00:00,,"regression,ui",Bug,valid
+PROJ-2020,Email template engine crashes on nested conditional blocks,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to User Management
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Closed,Minor,Trivial,User Management,carol.williams,bob.smith,2025-03-19T11:00:00,2025-04-06T00:00:00,,"regression,backend",Bug,valid
+PROJ-2087,Title case in menu items feels inconsistent with sentence case elsewhere,I think this might be an issue but I'm not sure. It happened once and I couldn't reproduce it.,Reopened,Trivial,Minor,Notifications,frank.miller,,2025-03-11T22:00:00,,,question,Bug,invalid
+PROJ-2007,Background image in hero section causes layout shift on initial paint,"Found during regression testing of File Upload.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Closed,Trivial,Major,File Upload,dave.brown,eve.davis,2025-03-09T08:00:00,,,"regression,backend",Bug,valid
+PROJ-2011,Environment variable secrets logged in plain text during startup,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to API Gateway
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Reopened,Critical,Critical,API Gateway,frank.miller,alice.johnson,2025-03-13T06:00:00,2025-04-12T00:00:00,,regression,Bug,valid
+PROJ-2065,Bar chart Y-axis label collides with large tick values,"Found during regression testing of Dashboard.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Closed,Minor,Major,Dashboard,alice.johnson,alice.johnson,2025-03-05T09:00:00,2025-04-12T00:00:00,,,Bug,valid
+PROJ-2091,Background job scheduler skips runs after server clock adjustment,"Steps to reproduce:
+1. Navigate to Dashboard
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment
+
+(Similar issue observed independently)",Resolved,Trivial,Major,Dashboard,carol.williams,,2025-03-19T15:00:00,,Duplicate,duplicate,Bug,duplicate
+PROJ-2034,Inline code block styling lost when content pasted from Word,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Notifications
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",In Progress,Minor,Critical,Notifications,frank.miller,carol.williams,2025-03-12T14:00:00,,,"regression,ui",Bug,valid
+PROJ-2006,Kanban board drag handle unresponsive on touch devices,"Steps to reproduce:
+1. Navigate to API Gateway
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Reopened,Major,Trivial,API Gateway,carol.williams,bob.smith,2025-03-16T21:00:00,2025-04-09T00:00:00,,"regression,backend",Bug,valid
+PROJ-2017,Password complexity rules not enforced on API-created accounts,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Notifications
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Reopened,Major,Trivial,Notifications,alice.johnson,carol.williams,2025-03-06T20:00:00,,Won't Fix,regression,Bug,valid
+PROJ-2075,Would be nice to have a global undo action,Saw this on my personal device. Not sure if it's related to my setup or the application.,In Progress,Minor,Minor,Reports,bob.smith,,2025-03-22T10:00:00,,,needs-triage,Bug,invalid
+PROJ-2072,Icons look pixelated on my high-DPI external monitor,Saw this on my personal device. Not sure if it's related to my setup or the application.,Open,Trivial,Trivial,Reports,bob.smith,,2025-03-07T17:00:00,,,question,Bug,invalid
+PROJ-2046,Currency conversion uses stale exchange rates,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Search
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",In Progress,Minor,Minor,Search,eve.davis,eve.davis,2025-03-16T21:00:00,2025-04-03T00:00:00,,"regression,ui",Bug,valid
+PROJ-2028,Recursive folder move endpoint allows circular reference,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Payment
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Closed,Minor,Minor,Payment,carol.williams,bob.smith,2025-03-22T20:00:00,2025-03-30T00:00:00,,,Bug,valid
+PROJ-2044,Dashboard auto-refresh interval doubles after each browser tab switch,"Steps to reproduce:
+1. Navigate to Reports
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Reopened,Trivial,Critical,Reports,frank.miller,bob.smith,2025-03-05T14:00:00,2025-03-30T00:00:00,,"regression,ui",Bug,valid
+PROJ-2015,Settings page crashes when timezone is changed,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Payment
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",In Progress,Minor,Critical,Payment,carol.williams,eve.davis,2025-03-15T04:00:00,,Won't Fix,"regression,ui",Bug,valid
+PROJ-2003,Drag and drop file upload breaks on Safari,"Found during regression testing of Search.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Resolved,Critical,Minor,Search,alice.johnson,bob.smith,2025-03-11T10:00:00,2025-04-10T00:00:00,Fixed,"regression,ui",Bug,valid
+PROJ-2069,Autocomplete search shows deleted items,"Steps to reproduce:
+1. Navigate to File Upload
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Closed,Major,Critical,File Upload,frank.miller,eve.davis,2025-03-23T23:00:00,2025-04-08T00:00:00,,regression,Bug,valid
+PROJ-2066,Lazy-loaded images flash alt text before rendering on slow connection,"Steps to reproduce:
+1. Navigate to Reports
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Closed,Major,Minor,Reports,dave.brown,bob.smith,2025-03-08T01:00:00,2025-04-08T00:00:00,Fixed,"regression,ui",Bug,valid
+PROJ-2055,Database connection pool exhausted under concurrent report generation,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Notifications
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Reopened,Minor,Major,Notifications,frank.miller,bob.smith,2025-03-24T20:00:00,2025-04-08T00:00:00,Won't Fix,regression,Bug,valid
+PROJ-2063,Team member invitation email contains broken unsubscribe link,"Steps to reproduce:
+1. Navigate to Payment
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Closed,Major,Critical,Payment,eve.davis,eve.davis,2025-03-06T02:00:00,2025-04-10T00:00:00,Fixed,"regression,backend",Bug,valid
+PROJ-2095,Comment thread collapses unexpectedly when new reply arrives,"Found during regression testing of User Management.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma
+
+(Similar issue observed independently)",Open,Major,Minor,User Management,alice.johnson,,2025-03-14T14:00:00,,Duplicate,duplicate,Bug,duplicate
+PROJ-2068,OAuth redirect loop when third-party cookies disabled,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to File Upload
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",In Progress,Minor,Minor,File Upload,bob.smith,eve.davis,2025-03-24T21:00:00,2025-04-02T00:00:00,Won't Fix,"regression,ui",Bug,valid
+PROJ-2088,Sidebar navigation takes too many clicks to reach settings,Saw this on my personal device. Not sure if it's related to my setup or the application.,Reopened,Minor,Minor,Payment,dave.brown,,2025-03-15T00:00:00,,,,Bug,invalid
+PROJ-2050,Cannot delete user with active subscriptions,"Steps to reproduce:
+1. Navigate to Settings
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",In Progress,Critical,Major,Settings,eve.davis,frank.miller,2025-03-12T01:00:00,,Won't Fix,"regression,critical",Bug,valid
+PROJ-2086,Tab order on form skips the middle name field,This is more of a suggestion than a bug. The current behavior works but could be improved.,Open,Minor,Minor,Search,bob.smith,,2025-03-10T02:00:00,,,needs-triage,Bug,invalid
+PROJ-2052,API key rotation endpoint does not revoke previous key,"Steps to reproduce:
+1. Navigate to Authentication
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Reopened,Major,Critical,Authentication,carol.williams,bob.smith,2025-03-18T05:00:00,2025-03-27T00:00:00,,"regression,critical",Bug,valid
+PROJ-2094,Merge request diff viewer crashes on binary file comparison (intermittent),"Steps to reproduce:
+1. Navigate to Payment
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: 
+
+(Similar issue observed independently)",In Progress,Trivial,Trivial,Payment,bob.smith,,2025-03-17T10:00:00,,Duplicate,duplicate,Bug,duplicate
+PROJ-2027,Certificate pinning bypass when proxy rewrites response headers,"Found during regression testing of Dashboard.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Open,Critical,Trivial,Dashboard,eve.davis,frank.miller,2025-03-20T16:00:00,2025-04-08T00:00:00,Fixed,"regression,ui",Bug,valid
+PROJ-2005,File upload fails silently for files over 10MB,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Settings
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",In Progress,Major,Major,Settings,bob.smith,frank.miller,2025-03-19T01:00:00,2025-04-02T00:00:00,,,Bug,valid
+PROJ-2058,PDF report has overlapping text in footer,"Found during regression testing of File Upload.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Resolved,Minor,Minor,File Upload,dave.brown,carol.williams,2025-03-24T07:00:00,,Fixed,"regression,critical",Bug,valid
+PROJ-2029,Email notifications sent with wrong recipient name,"Found during regression testing of Payment.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",In Progress,Major,Major,Payment,alice.johnson,carol.williams,2025-03-12T11:00:00,2025-04-11T00:00:00,Won't Fix,regression,Bug,valid
+PROJ-2078,Dropdown animation feels sluggish compared to competitor,This is more of a suggestion than a bug. The current behavior works but could be improved.,In Progress,Major,Minor,Settings,frank.miller,,2025-03-17T18:00:00,,,,Bug,invalid
+PROJ-2030,REST endpoint returns 500 when Accept header specifies XML,"Found during regression testing of Reports.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Reopened,Major,Minor,Reports,carol.williams,eve.davis,2025-03-22T02:00:00,2025-03-31T00:00:00,Fixed,"regression,ui",Bug,valid
+PROJ-2002,CSV import fails when header row contains trailing whitespace,"Steps to reproduce:
+1. Navigate to Search
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Reopened,Minor,Critical,Search,frank.miller,carol.williams,2025-03-22T12:00:00,2025-04-05T00:00:00,Fixed,,Bug,valid
+PROJ-2092,REST endpoint returns 500 when Accept header specifies XML (intermittent),"Found during regression testing of Reports.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma
+
+(Similar issue observed independently)",Closed,Major,Minor,Reports,carol.williams,,2025-03-10T21:00:00,,Duplicate,duplicate,Bug,duplicate
+PROJ-2061,Geolocation lookup returns null for IPv6 addresses,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to File Upload
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Open,Minor,Trivial,File Upload,carol.williams,alice.johnson,2025-03-21T14:00:00,2025-04-09T00:00:00,Fixed,,Bug,valid
+PROJ-2098,Currency conversion uses stale exchange rates,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Search
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.
+
+(Similar issue observed independently)",Reopened,Minor,Minor,Search,eve.davis,,2025-03-24T10:00:00,,Duplicate,duplicate,Bug,duplicate
+PROJ-2038,Large file upload causes memory spike on server,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Notifications
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Resolved,Critical,Critical,Notifications,frank.miller,eve.davis,2025-03-22T06:00:00,2025-04-04T00:00:00,Fixed,"regression,critical",Bug,valid
+PROJ-2013,Markdown renderer executes embedded script tags,"Found during regression testing of Authentication.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Reopened,Minor,Major,Authentication,eve.davis,carol.williams,2025-03-18T00:00:00,2025-04-02T00:00:00,,"regression,ui",Bug,valid
+PROJ-2053,Export to Excel truncates cell content at 32767 characters,"Steps to reproduce:
+1. Navigate to User Management
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Open,Major,Critical,User Management,bob.smith,carol.williams,2025-03-14T14:00:00,2025-04-12T00:00:00,,"regression,ui",Bug,valid
+PROJ-2008,Hotkey conflict between global search and inline cell editing,"Found during regression testing of Payment.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Reopened,Trivial,Minor,Payment,eve.davis,alice.johnson,2025-03-10T08:00:00,2025-04-11T00:00:00,Fixed,"regression,critical",Bug,valid
+PROJ-2024,Two-factor authentication bypass via session cookie,"Found during regression testing of Search.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Open,Major,Minor,Search,eve.davis,frank.miller,2025-03-19T06:00:00,2025-04-04T00:00:00,,"regression,ui",Bug,valid
+PROJ-2060,GraphQL query returns 500 for nested pagination,"Found during regression testing of File Upload.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Resolved,Critical,Critical,File Upload,dave.brown,alice.johnson,2025-03-22T16:00:00,,Fixed,"regression,ui",Bug,valid
+PROJ-2067,SSO login redirects to blank page after IdP timeout,"Steps to reproduce:
+1. Navigate to Payment
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Reopened,Critical,Critical,Payment,bob.smith,bob.smith,2025-03-06T12:00:00,2025-04-12T00:00:00,Fixed,regression,Bug,valid
+PROJ-2025,Saved search query does not URL-encode special characters,"Steps to reproduce:
+1. Navigate to Dashboard
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Closed,Major,Trivial,Dashboard,alice.johnson,alice.johnson,2025-03-15T21:00:00,2025-03-28T00:00:00,Won't Fix,"regression,backend",Bug,valid
+PROJ-2084,Tooltips are distracting when I scroll quickly,I think this might be an issue but I'm not sure. It happened once and I couldn't reproduce it.,Reopened,Minor,Trivial,Dashboard,eve.davis,,2025-03-13T12:00:00,,,,Bug,invalid
+PROJ-2016,Role-based access control allows viewer to edit shared dashboard,"Found during regression testing of API Gateway.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Closed,Minor,Major,API Gateway,frank.miller,alice.johnson,2025-03-19T01:00:00,,Fixed,"regression,ui",Bug,valid
+PROJ-2074,The confirmation dialog is annoying for frequent users,This is more of a suggestion than a bug. The current behavior works but could be improved.,Resolved,Trivial,Minor,API Gateway,dave.brown,,2025-03-11T06:00:00,,,question,Bug,invalid
+PROJ-2037,Report export produces empty CSV file,"Steps to reproduce:
+1. Navigate to Authentication
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Resolved,Minor,Trivial,Authentication,carol.williams,carol.williams,2025-03-22T00:00:00,2025-04-08T00:00:00,Fixed,"regression,backend",Bug,valid
+PROJ-2085,Title case in menu items feels inconsistent with sentence case elsewhere,I think this might be an issue but I'm not sure. It happened once and I couldn't reproduce it.,In Progress,Minor,Minor,API Gateway,bob.smith,,2025-03-25T20:00:00,,,,Bug,invalid
+PROJ-2041,Data retention policy deletes records one day early,"Steps to reproduce:
+1. Navigate to File Upload
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Resolved,Trivial,Minor,File Upload,eve.davis,bob.smith,2025-03-17T19:00:00,2025-04-04T00:00:00,Won't Fix,,Bug,valid
+PROJ-2045,Status badge color contrast ratio fails WCAG AA on light theme,"Found during regression testing of File Upload.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Closed,Trivial,Critical,File Upload,dave.brown,frank.miller,2025-03-09T16:00:00,,Won't Fix,"regression,critical",Bug,valid
+PROJ-2048,Retry-after header missing on 429 rate limit response,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to User Management
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Open,Minor,Trivial,User Management,eve.davis,dave.brown,2025-03-16T04:00:00,,Won't Fix,regression,Bug,valid
+PROJ-2096,Comment thread collapses unexpectedly when new reply arrives,"Found during regression testing of User Management.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma
+
+(Similar issue observed independently)",In Progress,Major,Minor,User Management,carol.williams,,2025-03-07T05:00:00,,Duplicate,duplicate,Bug,duplicate
+PROJ-2089,The loading spinner is not centered perfectly,This is more of a suggestion than a bug. The current behavior works but could be improved.,In Progress,Minor,Minor,Search,frank.miller,,2025-03-17T21:00:00,,,question,Bug,invalid
+PROJ-2083,Login page background image takes too long to load on hotel wifi,This is more of a suggestion than a bug. The current behavior works but could be improved.,Open,Minor,Minor,User Management,frank.miller,,2025-03-18T05:00:00,,,,Bug,invalid
+PROJ-2012,API rate limiting not enforced for authenticated users,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Reports
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Open,Critical,Trivial,Reports,carol.williams,frank.miller,2025-03-24T14:00:00,,,,Bug,valid
+PROJ-2021,Webhook retry logic sends duplicate payloads on network timeout,"Steps to reproduce:
+1. Navigate to Authentication
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Closed,Major,Major,Authentication,frank.miller,alice.johnson,2025-03-09T19:00:00,2025-04-09T00:00:00,Fixed,"regression,ui",Bug,valid
+PROJ-2031,User cannot change email without re-verification,"Found during regression testing of Settings.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Reopened,Major,Critical,Settings,frank.miller,alice.johnson,2025-03-07T01:00:00,2025-04-13T00:00:00,Won't Fix,"regression,ui",Bug,valid
+PROJ-2080,Login page background image takes too long to load on hotel wifi,Saw this on my personal device. Not sure if it's related to my setup or the application.,Open,Minor,Minor,Dashboard,dave.brown,,2025-03-06T00:00:00,,,needs-triage,Bug,invalid
+PROJ-2042,Autocomplete suggestion list flickers when typing fast,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to File Upload
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Reopened,Major,Critical,File Upload,eve.davis,carol.williams,2025-03-15T21:00:00,,,,Bug,valid
+PROJ-2076,Table column widths feel inconsistent across pages,This is more of a suggestion than a bug. The current behavior works but could be improved.,Resolved,Minor,Trivial,Notifications,frank.miller,,2025-03-19T03:00:00,,,question,Bug,invalid
+PROJ-2082,Graphs should use company brand colors instead of defaults,Saw this on my personal device. Not sure if it's related to my setup or the application.,Closed,Critical,Minor,Settings,frank.miller,,2025-03-22T13:00:00,,,,Bug,invalid
+PROJ-2093,Dashboard charts not rendering with large datasets,"Found during regression testing of API Gateway.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma
+
+(Similar issue observed independently)",In Progress,Minor,Major,API Gateway,alice.johnson,,2025-03-07T02:00:00,,Duplicate,duplicate,Bug,duplicate
+PROJ-2071,Notification sound is too loud and there is no volume control,I think this might be an issue but I'm not sure. It happened once and I couldn't reproduce it.,Reopened,Minor,Trivial,Dashboard,carol.williams,,2025-03-22T16:00:00,,,,Bug,invalid
+PROJ-2057,Password reset token expires before email arrives,"Found during regression testing of Settings.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Reopened,Critical,Minor,Settings,carol.williams,frank.miller,2025-03-12T01:00:00,2025-04-09T00:00:00,Won't Fix,"regression,ui",Bug,valid
+PROJ-2073,Calendar widget starts week on Sunday instead of Monday,Saw this on my personal device. Not sure if it's related to my setup or the application.,Reopened,Minor,Minor,User Management,alice.johnson,,2025-03-11T18:00:00,,,question,Bug,invalid
+PROJ-2049,Dashboard charts not rendering for large datasets,"Found during regression testing of API Gateway.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Resolved,Minor,Major,API Gateway,carol.williams,bob.smith,2025-03-22T08:00:00,2025-04-03T00:00:00,Fixed,regression,Bug,valid
+PROJ-2043,Bulk payment import skips rows with special characters,"Found during regression testing of Authentication.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Closed,Major,Major,Authentication,carol.williams,frank.miller,2025-03-06T18:00:00,2025-04-11T00:00:00,,"regression,ui",Bug,valid
+PROJ-2051,Background job scheduler skips runs after server clock adjustment,"Steps to reproduce:
+1. Navigate to Dashboard
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Reopened,Trivial,Major,Dashboard,alice.johnson,dave.brown,2025-03-25T15:00:00,2025-04-01T00:00:00,Won't Fix,"regression,backend",Bug,valid
+PROJ-2001,User preference sync across tabs lost after service worker update,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to User Management
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Reopened,Trivial,Minor,User Management,dave.brown,alice.johnson,2025-03-23T21:00:00,,Won't Fix,"regression,backend",Bug,valid
+PROJ-2090,Expected different behavior based on my assumption,Saw this on my personal device. Not sure if it's related to my setup or the application.,Resolved,Major,Trivial,Dashboard,frank.miller,,2025-03-12T02:00:00,,,needs-triage,Bug,invalid
+PROJ-2018,Locale-specific number formatting breaks chart axis labels,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Notifications
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Open,Minor,Trivial,Notifications,frank.miller,dave.brown,2025-03-19T12:00:00,2025-03-31T00:00:00,,"regression,critical",Bug,valid
+PROJ-2014,Print stylesheet cuts off right margin of wide tables,"Found during regression testing of Payment.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Resolved,Critical,Critical,Payment,frank.miller,dave.brown,2025-03-20T01:00:00,2025-04-06T00:00:00,Won't Fix,regression,Bug,valid
+PROJ-2059,Pipeline artifact download link expires before notification email arrives,"Found during regression testing of API Gateway.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Reopened,Major,Trivial,API Gateway,bob.smith,eve.davis,2025-03-11T07:00:00,2025-04-14T00:00:00,Fixed,,Bug,valid
+PROJ-2026,Audit trail missing entries for bulk status change operations,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Dashboard
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Reopened,Major,Major,Dashboard,bob.smith,bob.smith,2025-03-12T15:00:00,,Won't Fix,"regression,critical",Bug,valid
+PROJ-2079,Can we change the default landing page to analytics,This is more of a suggestion than a bug. The current behavior works but could be improved.,Closed,Minor,Minor,Notifications,frank.miller,,2025-03-16T05:00:00,,,,Bug,invalid
+PROJ-2077,Request: add CSV export button to every table,This is more of a suggestion than a bug. The current behavior works but could be improved.,Closed,Major,Minor,Reports,bob.smith,,2025-03-09T00:00:00,,,needs-triage,Bug,invalid
+PROJ-2097,Clickjacking possible on account settings page missing X-Frame-Options (intermittent),"Steps to reproduce:
+1. Navigate to Payment
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: 
+
+(Similar issue observed independently)",Open,Minor,Major,Payment,dave.brown,,2025-03-05T02:00:00,,Duplicate,duplicate,Bug,duplicate
+PROJ-2081,The loading spinner is not centered perfectly,Saw this on my personal device. Not sure if it's related to my setup or the application.,In Progress,Critical,Minor,Reports,frank.miller,,2025-03-19T11:00:00,,,,Bug,invalid
+PROJ-2032,Timezone offset calculated incorrectly for daylight saving dates,"Found during regression testing of Search.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Open,Minor,Minor,Search,eve.davis,frank.miller,2025-03-14T15:00:00,,,"regression,backend",Bug,valid
+PROJ-2033,Spell checker underlines technical jargon stored in custom dictionary,"Found during regression testing of Payment.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Open,Major,Trivial,Payment,dave.brown,dave.brown,2025-03-19T06:00:00,2025-03-30T00:00:00,Won't Fix,"regression,backend",Bug,valid
+PROJ-2047,Comment thread collapses unexpectedly when new reply arrives,"Found during regression testing of User Management.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Resolved,Major,Minor,User Management,bob.smith,carol.williams,2025-03-11T22:00:00,2025-04-05T00:00:00,,"regression,backend",Bug,valid
+PROJ-2010,Pagination off-by-one error on last page of results,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Authentication
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Open,Minor,Minor,Authentication,bob.smith,bob.smith,2025-03-09T01:00:00,,,"regression,ui",Bug,valid
+PROJ-2062,Full-text search ignores hyphenated words,"Found during regression testing of API Gateway.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Open,Minor,Minor,API Gateway,dave.brown,frank.miller,2025-03-05T12:00:00,,Fixed,"regression,ui",Bug,valid
+PROJ-2099,Cannot delete user with active subscriptions,"Steps to reproduce:
+1. Navigate to Settings
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment:
+
+(Similar issue observed independently)",Closed,Critical,Major,Settings,alice.johnson,,2025-03-17T02:00:00,,Duplicate,duplicate,Bug,duplicate
+PROJ-2054,Batch email sender silently drops attachments above 5MB,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to API Gateway
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",In Progress,Minor,Minor,API Gateway,eve.davis,bob.smith,2025-03-19T20:00:00,,Fixed,regression,Bug,valid
+PROJ-2036,Attachment preview fails for HEIC image format,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to File Upload
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Closed,Trivial,Trivial,File Upload,dave.brown,alice.johnson,2025-03-07T12:00:00,2025-04-02T00:00:00,Fixed,,Bug,valid
+PROJ-2056,Clickjacking possible on account settings page missing X-Frame-Options,"Steps to reproduce:
+1. Navigate to Payment
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",In Progress,Minor,Major,Payment,dave.brown,alice.johnson,2025-03-13T12:00:00,,Won't Fix,"regression,backend",Bug,valid
+PROJ-2022,Breadcrumb navigation shows wrong hierarchy after deep link,"Found during regression testing of Reports.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Resolved,Major,Critical,Reports,alice.johnson,eve.davis,2025-03-09T21:00:00,2025-04-06T00:00:00,Won't Fix,"regression,critical",Bug,valid
+PROJ-2009,Invoice PDF generator crashes on Unicode company names,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to Reports
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Resolved,Trivial,Trivial,Reports,alice.johnson,alice.johnson,2025-03-17T16:00:00,2025-04-07T00:00:00,Fixed,"regression,backend",Bug,valid
+PROJ-2019,User profile update does not save phone number,"Reproducible 100% of the time.
+
+Steps:
+1. Log in as any user
+2. Go to File Upload
+3. Trigger the issue
+
+This blocks QA testing for the current sprint.",Open,Minor,Critical,File Upload,carol.williams,dave.brown,2025-03-24T05:00:00,2025-04-05T00:00:00,Fixed,regression,Bug,valid
+PROJ-2064,Custom field validation skipped during bulk import,"Steps to reproduce:
+1. Navigate to Dashboard
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Closed,Major,Trivial,Dashboard,dave.brown,dave.brown,2025-03-17T12:00:00,,Fixed,"regression,backend",Bug,valid
+PROJ-2100,Issue: timezone offset calculated incorrectly for daylight saving dates,"Found during regression testing of Search.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma
+
+(Similar issue observed independently)",Closed,Minor,Minor,Search,eve.davis,,2025-03-10T04:00:00,,Duplicate,duplicate,Bug,duplicate
+PROJ-2039,Search returns no results for exact match queries,"Found during regression testing of API Gateway.
+
+The issue occurs consistently and impacts user workflow. Screenshots attached.
+
+Browser: Firefox 121
+OS: macOS Sonoma",Resolved,Minor,Critical,API Gateway,eve.davis,bob.smith,2025-03-08T12:00:00,2025-04-05T00:00:00,Won't Fix,"regression,ui",Bug,valid
+PROJ-2035,Merge request diff viewer crashes on binary file comparison,"Steps to reproduce:
+1. Navigate to Payment
+2. Perform the action described
+3. Observe incorrect behavior
+
+Expected: Feature works correctly
+Actual: Feature fails as described in summary
+
+Environment: Chrome 120, Windows 11",Resolved,Trivial,Trivial,Payment,bob.smith,bob.smith,2025-03-10T10:00:00,2025-04-05T00:00:00,Fixed,"regression,ui",Bug,valid

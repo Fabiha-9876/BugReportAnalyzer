@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Review Queue - {{ cycle.name }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="/cycles/{{ cycle.id }}">{{ cycle.name }}</a></li>
+        <li class="breadcrumb-item active">Review Queue</li>
+    </ol>
+</nav>
+
+<h2><i class="bi bi-eye"></i> Review Queue</h2>
+<p class="text-muted">Bugs with low ML confidence that need human review, sorted by confidence (lowest first)</p>
+
+{% if low_confidence_bugs %}
+<div class="row">
+    {% for bug in low_confidence_bugs %}
+    <div class="col-12 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-5">
+                        <h6 class="mb-1">
+                            <a href="/bugs/{{ bug.id }}">{{ bug.external_id or bug.id }}</a>:
+                            {{ bug.summary[:70] }}{% if bug.summary|length > 70 %}...{% endif %}
+                        </h6>
+                        <small class="text-muted">{{ bug.component }} | {{ bug.reporter }}</small>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        {% set cls = bug.ml_classification or 'pending' %}
+                        <span class="badge bg-{{ 'success' if cls == 'valid' else 'danger' if cls == 'invalid' else 'secondary' }}">
+                            ML: {{ cls }}
+                        </span>
+                        {% if bug.ml_confidence %}
+                        <br><small class="text-danger">{{ "%.0f"|format(bug.ml_confidence * 100) }}% confidence</small>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-5">
+                        <form class="inline-override d-flex gap-2" data-bug-id="{{ bug.id }}">
+                            <select class="form-select form-select-sm override-select">
+                                <option value="valid">Valid</option>
+                                <option value="invalid">Invalid</option>
+                                <option value="duplicate">Duplicate</option>
+                                <option value="enhancement">Enhancement</option>
+                                <option value="wont_fix">Won't Fix</option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm override-reason" placeholder="Reason (optional)" style="min-width: 150px;">
+                            <button type="submit" class="btn btn-sm btn-warning">Override</button>
+                        </form>
+                    </div>
+                </div>
+                {% if bug.ml_explanation %}
+                <div class="mt-2">
+                    <small class="text-muted"><i class="bi bi-robot"></i> {{ bug.ml_explanation[:150] }}{% if bug.ml_explanation|length > 150 %}...{% endif %}</small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="bi bi-check-circle display-1 text-success"></i>
+    <h4 class="mt-3">All clear!</h4>
+    <p class="text-muted">No bugs need review in this cycle.</p>
+</div>
+{% endif %}
+
+{% if unreviewed_bugs and not low_confidence_bugs %}
+<h4 class="mt-4">All Unreviewed Bugs ({{ unreviewed_bugs|length }})</h4>
+<p class="text-muted">These bugs have sufficient ML confidence but haven't been manually reviewed yet.</p>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.querySelectorAll('.inline-override').forEach(form => {
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const bugId = this.dataset.bugId;
+        const classification = this.querySelector('.override-select').value;
+        const reason = this.querySelector('.override-reason').value;
+        try {
+            const resp = await fetch('/api/override', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    bug_id: parseInt(bugId),
+                    new_classification: classification,
+                    changed_by: 'reviewer',
+                    reason: reason,
+                }),
+            });
+            if (resp.ok) {
+                this.closest('.card').classList.add('border-success');
+                this.querySelector('button').textContent = 'Done';
+                this.querySelector('button').disabled = true;
+            }
+        } catch(err) { console.error(err); }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Analytics - {{ project.name }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item active">{{ project.name }} Analytics</li>
+    </ol>
+</nav>
+
+<h2><i class="bi bi-graph-up"></i> {{ project.name }} - Analytics</h2>
+<p class="text-muted">Cycle-over-cycle trends and insights</p>
+
+{% if trends %}
+<!-- Trend Charts -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">Accuracy / Invalid / Duplicate Trends</div>
+            <div class="card-body">
+                <canvas id="trendLineChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">Classification Stacked Bar</div>
+            <div class="card-body">
+                <canvas id="stackedBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header">Component Heatmap</div>
+            <div class="card-body">
+                <canvas id="componentHeatmap"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cycle Summary Table -->
+<div class="card shadow-sm">
+    <div class="card-header">Cycle Summary</div>
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Cycle</th>
+                    <th>Total Bugs</th>
+                    <th>Accuracy</th>
+                    <th>Invalid Rate</th>
+                    <th>Duplicate Rate</th>
+                    <th>DDE</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in trends %}
+                <tr>
+                    <td><a href="/cycles/{{ t.cycle_id }}">{{ t.cycle_name }}</a></td>
+                    <td>{{ t.total_bugs }}</td>
+                    <td>
+                        <span class="{% if t.testing_accuracy >= 0.8 %}text-success{% elif t.testing_accuracy >= 0.6 %}text-warning{% else %}text-danger{% endif %}">
+                            {{ "%.1f"|format(t.testing_accuracy * 100) }}%
+                        </span>
+                    </td>
+                    <td>{{ "%.1f"|format(t.invalid_rate * 100) }}%</td>
+                    <td>{{ "%.1f"|format(t.duplicate_rate * 100) }}%</td>
+                    <td>{{ "%.1f"|format(t.dde * 100) }}%</td>
+                    <td>
+                        <a href="/cycles/{{ t.cycle_id }}" class="btn btn-sm btn-outline-primary">View</a>
+                        <a href="/review/{{ t.cycle_id }}" class="btn btn-sm btn-outline-warning">Review</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="bi bi-bar-chart display-1 text-muted"></i>
+    <h4 class="mt-3">No cycles yet</h4>
+    <p class="text-muted">Upload bug reports to start seeing analytics.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if trends %}
+<script>
+    const trends = {{ trends | tojson }};
+    renderTrendLineChart('trendLineChart', trends);
+    renderStackedBarChart('stackedBarChart', trends);
+    if (trends.length > 0 && trends[trends.length - 1].component_breakdown) {
+        renderComponentHeatmap('componentHeatmap', trends[trends.length - 1].component_breakdown);
+    }
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Upload - Bug Report Accuracy Analyzer{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h2><i class="bi bi-cloud-upload"></i> Upload Bug Reports</h2>
+        <p class="text-muted">Upload a CSV or Excel file from your bug tracking system</p>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Project</label>
+                        <div class="input-group">
+                            <select class="form-select" id="projectSelect" name="project_id">
+                                {% for p in projects %}
+                                <option value="{{ p.id }}">{{ p.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newProjectModal">
+                                <i class="bi bi-plus"></i> New
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Cycle Name</label>
+                        <input type="text" class="form-control" id="cycleName" name="cycle_name" placeholder="e.g., Sprint 24 Regression" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Source System</label>
+                        <select class="form-select" id="sourceSystem" name="source_system">
+                            <option value="auto">Auto-detect</option>
+                            <option value="jira">Jira</option>
+                            <option value="azure_devops">Azure DevOps</option>
+                            <option value="generic">Generic CSV</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">File (CSV or Excel)</label>
+                        <div class="drop-zone" id="dropZone">
+                            <i class="bi bi-file-earmark-spreadsheet display-4 text-muted"></i>
+                            <p class="mt-2">Drag & drop file here or click to browse</p>
+                            <input type="file" id="fileInput" name="file" accept=".csv,.xlsx,.xls" class="d-none">
+                            <p class="small text-muted" id="fileName"></p>
+                        </div>
+                    </div>
+
+                    <div id="previewSection" class="d-none mb-3">
+                        <h6>Column Preview</h6>
+                        <div class="table-responsive" style="max-height: 200px;">
+                            <table class="table table-sm table-bordered" id="previewTable">
+                                <thead id="previewHead"></thead>
+                                <tbody id="previewBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100" id="uploadBtn">
+                        <i class="bi bi-cloud-upload"></i> Upload & Analyze
+                    </button>
+                </form>
+
+                <div id="uploadResult" class="mt-3 d-none">
+                    <div class="alert" id="resultAlert"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Project Modal -->
+<div class="modal fade" id="newProjectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Project Name</label>
+                    <input type="text" class="form-control" id="newProjectName" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" id="newProjectDesc" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="createProjectBtn">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/upload.js"></script>
+{% endblock %}
