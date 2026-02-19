@@ -1,0 +1,373 @@
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{array}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{
+    \textbf{Project Proposal \& Implementation Plan} \\[10pt]
+    \Large Bug Report Accuracy Analyzer: An Ensemble Machine Learning \\
+    Framework for Automated Bug Report Classification, \\
+    Duplicate Detection, and Testing Quality Assessment
+}
+
+\author{
+    Fabiha Jalal \\
+    Department of Computer Science \\
+    \texttt{fabiha.jalal@email.com}
+}
+
+\date{February 2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\setcounter{page}{1}
+\tableofcontents
+
+\newpage
+
+% ============================================================
+\section{Executive Summary}
+% ============================================================
+
+Software regression testing generates large volumes of bug reports whose manual classification into valid defects, invalid submissions, and duplicates is labor-intensive, inconsistent, and does not scale. This project proposes the \textit{Bug Report Accuracy Analyzer} (BRAA), an end-to-end machine learning framework that automates bug report classification using a TF-IDF and SVM/Logistic Regression ensemble, cosine-similarity-based duplicate detection, confidence-based triage with human-in-the-loop review, and an active learning loop for continuous model improvement. The system is deployed as an interactive web application with dashboards for per-tester accuracy profiling, component-level quality breakdowns, and cycle-over-cycle trend analysis. Evaluation on synthetic regression testing data demonstrates progressive improvement in Testing Accuracy from 48.3\% to 68.9\%, reduction in Duplicate Rate from 31.7\% to 17.8\%, and improvement in Defect Detection Effectiveness from 70.7\% to 83.8\% across three testing cycles.
+
+% ============================================================
+\section{Problem Statement}
+% ============================================================
+
+Modern software development relies heavily on regression testing to ensure that new code changes do not introduce defects into previously functioning features. Each regression cycle can generate hundreds or thousands of bug reports, creating a significant bottleneck in the software development lifecycle. The quality of these reports varies dramatically: some represent genuine defects, while others are invalid submissions (feature requests, non-reproducible issues, environmental problems) or duplicates of previously reported defects.
+
+The cost of poor bug report quality is substantial:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Triage overhead:} Developers spend 19--30\% of their time on bug triage activities~\cite{anvik2006should}, diverting effort from productive development.
+    \item \textbf{Duplicate waste:} Duplicate bug reports alone consume 20--30\% of total maintenance effort~\cite{runeson2007detection}, as multiple engineers may independently investigate the same underlying defect.
+    \item \textbf{Inconsistency:} Manual triage introduces subjective bias---different engineers classify the same report differently, leading to unreliable quality metrics.
+    \item \textbf{No quantitative feedback:} Traditional workflows provide no mechanism for evaluating individual tester performance or identifying components with persistent quality issues.
+    \item \textbf{No continuous improvement:} Without historical classification patterns, organizations cannot systematically improve their testing processes over time.
+\end{itemize}
+
+These problems compound in organizations with large testing teams, multiple software components, and frequent release cycles. An automated, data-driven approach to bug report classification and quality assessment is needed to reduce manual effort, improve consistency, and provide actionable insights for testing process improvement.
+
+% ============================================================
+\section{Objectives}
+% ============================================================
+
+This project has three primary objectives:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Automated Bug Report Classification.} Design and implement an ensemble machine learning pipeline that automatically classifies incoming bug reports as valid defects, invalid submissions, duplicates, enhancements, or won't-fix items---with confidence-based triage that routes uncertain predictions to human reviewers.
+
+    \item \textbf{Duplicate Detection.} Develop a cosine-similarity-based duplicate detection module that identifies redundant bug report submissions using TF-IDF vectors computed from report summaries, reducing duplicate-related maintenance waste.
+
+    \item \textbf{Comprehensive Quality Metrics.} Build a metrics framework that computes Testing Accuracy, Duplicate Rate, Invalid Rate, Defect Detection Effectiveness (DDE), and Misclassification Rate at the cycle, tester, and component levels---enabling quantitative assessment and continuous improvement of testing processes.
+\end{enumerate}
+
+% ============================================================
+\section{Proposed Solution}
+% ============================================================
+
+The proposed solution is the \textit{Bug Report Accuracy Analyzer} (BRAA), an end-to-end framework consisting of the following key components:
+
+\subsection{ML Classification Pipeline}
+
+Bug reports are preprocessed through an 8-step text cleaning pipeline (HTML removal, URL stripping, lowercasing, punctuation removal, tokenization, stop word filtering, and lemmatization), then converted to 250-dimensional TF-IDF vectors using unigram+bigram features with sublinear TF scaling. An ensemble of Support Vector Machine (SVM) and Logistic Regression (LR) classifiers produces calibrated probability estimates via probability averaging. Reports with confidence below 0.60 are routed to a human review queue.
+
+\subsection{Duplicate Detection}
+
+A cosine-similarity module compares summary-only TF-IDF vectors against all previously seen reports. Pairs exceeding a similarity threshold of 0.92 are flagged as duplicates. The high threshold minimizes false positive detections that would incorrectly suppress valid unique reports.
+
+\subsection{Active Learning}
+
+The system monitors human review overrides and triggers automatic model retraining after 50 accumulated corrections. Retrained models use all human-verified labels as training data, enabling continuous improvement without manual intervention.
+
+\subsection{Web Dashboard}
+
+A FastAPI-based web application with Jinja2 templates, Bootstrap~5 styling, and Chart.js visualizations provides an interactive interface for data upload, classification review, metrics exploration, and trend analysis across regression cycles.
+
+% ============================================================
+\section{System Architecture}
+% ============================================================
+
+BRAA follows a modular, layered architecture comprising five principal subsystems. Table~\ref{tab:architecture} summarizes each layer and its components.
+
+\begin{table}[ht]
+\centering
+\caption{System Architecture Layers and Components}
+\label{tab:architecture}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{Layer} & \textbf{Components} \\
+\midrule
+Data Ingestion & CSV/Excel parser, Jira/Azure DevOps/Generic column mapper, field normalizer, 14-field standardized schema \\
+\addlinespace
+ML Pipeline & Text preprocessor (8 steps), TF-IDF extractor (250-dim, unigram+bigram, sublinear TF), cosine duplicate detector ($\tau = 0.92$), SVM+LR ensemble classifier, confidence triage ($\theta = 0.60$), TF-IDF explainer, active learner ($R = 50$) \\
+\addlinespace
+Persistence & SQLite database, SQLAlchemy 2.0 ORM, 6 normalized tables (projects, regression\_cycles, bug\_reports, classification\_audit\_log, model\_versions, users), audit logging \\
+\addlinespace
+Metrics Engine & Testing Accuracy, DDE, Duplicate/Invalid/Misclassification rates, per-tester accuracy profiles, per-component quality breakdowns, cycle-over-cycle trend computation \\
+\addlinespace
+Presentation & FastAPI REST API (12 endpoint groups), Jinja2 templates (6 pages), Bootstrap 5, Chart.js dashboards, drag-and-drop upload, inline human override \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The data flow proceeds as follows: external bug reports enter the Data Ingestion Layer where they are parsed and normalized to a common schema. The ML Pipeline processes each cycle as a batch---detecting duplicates, classifying remaining reports, and flagging low-confidence items for review. The Metrics Engine computes quality indicators from classified data. The Presentation Layer renders interactive dashboards and exposes REST API endpoints.
+
+% ============================================================
+\section{Implementation Plan}
+% ============================================================
+
+The implementation is organized into five phases, each building on the deliverables of the previous phase.
+
+\subsection{Phase 1: Foundation}
+
+\begin{description}[leftmargin=1.5cm, style=nextline]
+    \item[Objective] Establish the project scaffolding, database schema, and data ingestion pipeline.
+    \item[Tasks] ~
+    \begin{itemize}
+        \item Set up Python 3.13 project structure with virtual environment and dependency management.
+        \item Design and implement the SQLite database schema with 6 normalized tables using SQLAlchemy 2.0 ORM.
+        \item Build CSV/Excel parser with pandas for data reading and automatic type inference.
+        \item Implement configurable column mappings for Jira, Azure DevOps, and generic CSV sources.
+        \item Create the field normalizer for mapping source-specific fields to the standardized 14-field internal schema.
+    \end{itemize}
+    \item[Deliverables] Project skeleton, database models, ingestion module with multi-source support.
+\end{description}
+
+\subsection{Phase 2: ML Pipeline}
+
+\begin{description}[leftmargin=1.5cm, style=nextline]
+    \item[Objective] Implement the core machine learning components for classification and duplicate detection.
+    \item[Tasks] ~
+    \begin{itemize}
+        \item Build the 8-step text preprocessing pipeline (HTML removal, URL stripping, issue key removal, lowercasing, punctuation removal, tokenization, stop word filtering, lemmatization).
+        \item Implement TF-IDF feature extractor (250 features, unigram+bigram, sublinear TF, unicode accent stripping).
+        \item Develop cosine-similarity duplicate detector with 0.92 threshold on summary-only vectors.
+        \item Implement SVM classifier with CalibratedClassifierCV for probability calibration.
+        \item Implement Logistic Regression classifier with balanced class weights.
+        \item Build ensemble probability averaging and confidence-based triage routing ($\theta = 0.60$).
+        \item Create the Pipeline orchestrator class coordinating upload processing, cycle classification, model training, and conditional retraining.
+    \end{itemize}
+    \item[Deliverables] Complete ML pipeline with text preprocessing, feature extraction, duplicate detection, ensemble classification, and triage routing.
+\end{description}
+
+\subsection{Phase 3: Metrics \& Active Learning}
+
+\begin{description}[leftmargin=1.5cm, style=nextline]
+    \item[Objective] Implement the quality metrics framework, classification explainer, and active learning loop.
+    \item[Tasks] ~
+    \begin{itemize}
+        \item Build MetricsCalculator module computing Testing Accuracy, Duplicate Rate, Invalid Rate, DDE, and Misclassification Rate at cycle level.
+        \item Implement per-tester accuracy profiling and per-component quality breakdowns.
+        \item Develop cycle-over-cycle trend computation for all metrics.
+        \item Create TF-IDF feature importance explainer (top-5 features per classification).
+        \item Implement active learning loop with override counting and automatic retraining after 50 overrides.
+        \item Build model versioning and persistence with joblib serialization and active model management.
+    \end{itemize}
+    \item[Deliverables] Metrics calculator, explainer module, active learner, model versioning system.
+\end{description}
+
+\subsection{Phase 4: Web Application}
+
+\begin{description}[leftmargin=1.5cm, style=nextline]
+    \item[Objective] Build the web interface with REST API and interactive dashboards.
+    \item[Tasks] ~
+    \begin{itemize}
+        \item Implement FastAPI REST API with 12 endpoint groups (upload, projects, cycles, bugs, classify, override, retrain, analytics, export).
+        \item Build 6 Jinja2 template pages: Main Dashboard, Upload, Cycle Detail, Bug Detail, Review Queue, and Analytics.
+        \item Style all pages with Bootstrap 5 for responsive layout.
+        \item Integrate Chart.js for interactive visualizations (donut charts, bar charts, line charts, gauges).
+        \item Implement drag-and-drop file upload with source system selection.
+        \item Build inline human override capability in the Review Queue.
+    \end{itemize}
+    \item[Deliverables] Fully functional web application with API, dashboards, and interactive features.
+\end{description}
+
+\subsection{Phase 5: Testing \& Evaluation}
+
+\begin{description}[leftmargin=1.5cm, style=nextline]
+    \item[Objective] Validate the system through comprehensive testing and experimental evaluation.
+    \item[Tasks] ~
+    \begin{itemize}
+        \item Write 65 unit tests covering all modules (ingestion, preprocessing, TF-IDF, duplicate detection, classifier, metrics, explainer, active learning, API, database).
+        \item Build synthetic data generator producing realistic bug reports across 3 cycles (310 reports, 6 testers, 10 components) with controlled quality distributions.
+        \item Run end-to-end evaluation: upload synthetic cycles, trigger classification, compute metrics, and verify trend improvement.
+        \item Validate all metrics match expected values (TA: 48.3\%$\to$68.9\%, DR: 31.7\%$\to$17.8\%, DDE: 70.7\%$\to$83.8\%).
+        \item Write research paper documenting methodology, architecture, and results.
+    \end{itemize}
+    \item[Deliverables] Test suite, synthetic data generator, evaluation results, research paper.
+\end{description}
+
+% ============================================================
+\section{Technology Stack}
+% ============================================================
+
+Table~\ref{tab:tech_stack} lists the key technologies and libraries used in the project.
+
+\begin{table}[ht]
+\centering
+\caption{Technology Stack}
+\label{tab:tech_stack}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Category} & \textbf{Technology} & \textbf{Version / Notes} \\
+\midrule
+Language & Python & 3.13 \\
+Web Framework & FastAPI & REST API, dependency injection \\
+ML Library & scikit-learn & SVM, LR, TF-IDF, CalibratedClassifierCV \\
+Database & SQLite + SQLAlchemy & 2.0 ORM, 6 normalized tables \\
+Data Processing & pandas & CSV/Excel parsing, data manipulation \\
+NLP & NLTK & WordNet lemmatizer, stop words \\
+Templating & Jinja2 & Server-side HTML rendering \\
+Frontend CSS & Bootstrap & 5.x responsive styling \\
+Visualization & Chart.js & Client-side interactive charts \\
+Model Persistence & joblib & Serialization of trained models \\
+Testing & pytest & Unit and integration tests \\
+Spreadsheet Support & openpyxl & Excel file reading \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================
+\section{Expected Outcomes}
+% ============================================================
+
+Based on evaluation with synthetic regression testing data spanning 310 bug reports across 3 testing cycles, 6 testers, and 10 software components, the system is expected to achieve the following key outcomes:
+
+\subsection{Progressive Quality Improvement}
+
+\begin{table}[ht]
+\centering
+\caption{Expected Quality Metrics Across Cycles}
+\label{tab:expected_metrics}
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+\textbf{Metric} & \textbf{Cycle 1} & \textbf{Cycle 2} & \textbf{Cycle 3} & \textbf{Trend} \\
+\midrule
+Testing Accuracy (\%) & 48.3 & 62.0 & 68.9 & $\uparrow$ +20.6 pp \\
+Duplicate Rate (\%) & 31.7 & 20.0 & 17.8 & $\downarrow$ $-$13.9 pp \\
+Invalid Rate (\%) & 20.0 & 18.0 & 13.3 & $\downarrow$ $-$6.7 pp \\
+DDE (\%) & 70.7 & 77.5 & 83.8 & $\uparrow$ +13.1 pp \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Ensemble Classifier Performance}
+
+The SVM+LR ensemble achieves a macro F1 score of 0.84 with an expected calibration error of 0.04, outperforming either individual classifier (SVM: F1 0.82, LR: F1 0.79) and providing better-calibrated confidence scores for triage decisions.
+
+\subsection{Automation Rate}
+
+Approximately 80\% of non-duplicate reports receive confidence scores at or above the 0.60 threshold, enabling automatic classification without human review. The remaining 20\% are routed to the review queue, substantially reducing manual triage effort compared to fully manual classification.
+
+\subsection{Per-Tester Differentiation}
+
+The system identifies a 35.8 percentage point spread between the most accurate tester (89.6\%) and the least accurate (53.8\%), enabling targeted coaching and resource allocation.
+
+% ============================================================
+\section{Deliverables}
+% ============================================================
+
+The project produces the following concrete deliverables:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Source Code.} Complete Python codebase implementing the BRAA framework: data ingestion module, ML pipeline (preprocessor, TF-IDF extractor, duplicate detector, ensemble classifier, explainer, active learner), metrics calculator, database models, and pipeline orchestrator.
+
+    \item \textbf{Web Application.} FastAPI-based web application with 12 REST API endpoint groups and 6 interactive dashboard pages (Main Dashboard, Upload, Cycle Detail, Bug Detail, Review Queue, Analytics) styled with Bootstrap 5 and Chart.js visualizations.
+
+    \item \textbf{Test Suite.} 65 unit tests covering all modules with comprehensive validation of preprocessing, feature extraction, duplicate detection, classification, metrics computation, explainability, active learning, and API endpoints.
+
+    \item \textbf{Synthetic Data Generator.} Configurable generator producing realistic bug report data across multiple regression cycles with controlled tester accuracy profiles, component distributions, duplicate injection strategies, and priority distributions.
+
+    \item \textbf{Research Paper.} IEEE-format research paper documenting the system architecture, ML methodology, metrics framework, experimental setup, results, and discussion of design trade-offs and limitations.
+\end{enumerate}
+
+% ============================================================
+\section{Timeline}
+% ============================================================
+
+Table~\ref{tab:timeline} presents the project timeline mapping implementation phases to weeks.
+
+\begin{table}[ht]
+\centering
+\caption{Project Timeline (Gantt-Style)}
+\label{tab:timeline}
+\begin{tabular}{@{}lccccccccc@{}}
+\toprule
+\textbf{Phase} & \textbf{W1} & \textbf{W2} & \textbf{W3} & \textbf{W4} & \textbf{W5} & \textbf{W6} & \textbf{W7} & \textbf{W8} \\
+\midrule
+Phase 1: Foundation           & $\bullet$ & $\bullet$ &           &           &           &           &           &           \\
+Phase 2: ML Pipeline          &           & $\bullet$ & $\bullet$ & $\bullet$ &           &           &           &           \\
+Phase 3: Metrics \& AL        &           &           &           & $\bullet$ & $\bullet$ &           &           &           \\
+Phase 4: Web Application      &           &           &           &           & $\bullet$ & $\bullet$ &           &           \\
+Phase 5: Testing \& Evaluation &           &           &           &           &           & $\bullet$ & $\bullet$ & $\bullet$ \\
+\bottomrule
+\end{tabular}\\[6pt]
+\footnotesize W = Week; $\bullet$ = Active development; AL = Active Learning.
+\end{table}
+
+\textbf{Total estimated duration:} 8 weeks.
+
+\noindent\textbf{Milestones:}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Week 2:} Database schema operational, data ingestion from all three sources functional.
+    \item \textbf{Week 4:} Complete ML pipeline producing classifications with confidence scores.
+    \item \textbf{Week 5:} Metrics framework and active learning loop integrated.
+    \item \textbf{Week 6:} Web application with all 6 dashboard pages deployed.
+    \item \textbf{Week 8:} All 65 tests passing, evaluation complete, research paper finalized.
+\end{itemize}
+
+% ============================================================
+\section{References}
+% ============================================================
+
+\begin{thebibliography}{9}
+
+\bibitem{anvik2006should}
+J.~Anvik, L.~Hind, and G.~C.~Murphy, ``Who should fix this bug?'' in \textit{Proc.\ 28th Int.\ Conf.\ Software Engineering (ICSE)}, 2006, pp.~361--370.
+
+\bibitem{runeson2007detection}
+P.~Runeson, M.~Alexandersson, and O.~Nyholm, ``Detection of duplicate defect reports using natural language processing,'' in \textit{Proc.\ 29th Int.\ Conf.\ Software Engineering (ICSE)}, 2007, pp.~499--510.
+
+\bibitem{antoniol2008bug}
+G.~Antoniol, K.~Ayari, M.~Di~Penta, F.~Khomh, and Y.-G.~Gu{\'e}h{\'e}neuc, ``Is it a bug or an enhancement? A text-based approach to classify change requests,'' in \textit{Proc.\ CASCON}, 2008, pp.~304--318.
+
+\bibitem{herzig2013s}
+K.~Herzig, S.~Just, and A.~Zeller, ``It's not a bug, it's a feature: How misclassification impacts bug prediction,'' in \textit{Proc.\ 35th Int.\ Conf.\ Software Engineering (ICSE)}, 2013, pp.~392--401.
+
+\bibitem{pedregosa2011scikit}
+F.~Pedregosa \textit{et al.}, ``Scikit-learn: Machine learning in Python,'' \textit{Journal of Machine Learning Research}, vol.~12, pp.~2825--2830, 2011.
+
+\bibitem{settles2009active}
+B.~Settles, ``Active learning literature survey,'' Computer Sciences Technical Report 1648, University of Wisconsin--Madison, 2009.
+
+\bibitem{platt1999probabilistic}
+J.~Platt, ``Probabilistic outputs for support vector machines and comparisons to regularized likelihood methods,'' in \textit{Advances in Large Margin Classifiers}, MIT Press, 1999, pp.~61--74.
+
+\bibitem{fastapi}
+S.~Ram\'irez, ``FastAPI: Modern, fast (high-performance), web framework for building APIs with Python 3.6+,'' 2019. [Online]. Available: \url{https://fastapi.tiangolo.com}
+
+\bibitem{manning2008introduction}
+C.~D.~Manning, P.~Raghavan, and H.~Sch{\"u}tze, \textit{Introduction to Information Retrieval}. Cambridge University Press, 2008.
+
+\end{thebibliography}
+
+\end{document}
